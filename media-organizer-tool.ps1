@@ -1,16 +1,65 @@
-# Define the source and target directories
-$sourceDirs = "C:\Users" # Adjust this path to where you want to search
-$imageTargetDir = "D:\Images" # Change D:\ with your new drive letter
-$videoTargetDir = "D:\Videos" # Change D:\ with your new drive letter
-$officeTargetDir = "D:\OfficeFiles" # Change D:\ with your new drive letter
+<#
+.SYNOPSIS
+    This script is used to organize media files (images, videos, and office files) from source directories to target directories.
 
-# Define extensions to search for
-$imageExtensions = "*.jpg", "*.jpeg", "*.png", "*.gif", "*.bmp"
-$videoExtensions = "*.mp4", "*.avi", "*.mov", "*.wmv", "*.flv"
-$officeExtensions = "*.doc", "*.docx", "*.xls", "*.xlsx", "*.ppt", "*.pptx" # Add more extensions if needed
+.DESCRIPTION
+    The script takes the following parameters:
+    - sourceDirs: The source directories where the media files are located. Default is "C:\Users".
+    - imageTargetDir: The target directory where image files will be copied. Default is "D:\Images".
+    - videoTargetDir: The target directory where video files will be copied. Default is "D:\Videos".
+    - officeTargetDir: The target directory where office files will be copied. Default is "D:\OfficeFiles".
+    - imageExtensions: The file extensions of image files to be copied. Default is "*.jpg", "*.jpeg", "*.png", "*.gif", "*.bmp".
+    - videoExtensions: The file extensions of video files to be copied. Default is "*.mp4", "*.avi", "*.mov", "*.wmv", "*.flv".
+    - officeExtensions: The file extensions of office files to be copied. Default is "*.doc", "*.docx", "*.xls", "*.xlsx", "*.ppt", "*.pptx".
+    - excludeDirs: The directories to be excluded from the copy process. Default is "C:\Windows", "C:\Program Files".
 
-# Define directories to exclude (stock images/videos locations)
-$excludeDirs = "C:\Windows", "C:\Program Files" # Adjust these paths
+    The script creates the target directories if they don't exist and then copies the files from the source directories to the respective target directories.
+    If a file already exists in the target directory, it checks if the file is identical by comparing the MD5 hash. If it is identical, the file is skipped.
+    If it is not identical, a new file with a "duplicate_" prefix and a random number is created in the target directory.
+
+.PARAMETER sourceDirs
+    The source directories where the media files are located.
+
+.PARAMETER imageTargetDir
+    The target directory where image files will be copied.
+
+.PARAMETER videoTargetDir
+    The target directory where video files will be copied.
+
+.PARAMETER officeTargetDir
+    The target directory where office files will be copied.
+
+.PARAMETER imageExtensions
+    The file extensions of image files to be copied.
+
+.PARAMETER videoExtensions
+    The file extensions of video files to be copied.
+
+.PARAMETER officeExtensions
+    The file extensions of office files to be copied.
+
+.PARAMETER excludeDirs
+    The directories to be excluded from the copy process.
+
+.EXAMPLE
+    .\media-organizer-tool.ps1 -sourceDirs "C:\Users\JohnDoe\Documents" -imageTargetDir "D:\Images" -videoTargetDir "D:\Videos" -officeTargetDir "D:\OfficeFiles"
+
+    This example runs the script with custom source directories and target directories.
+
+.NOTES
+    - This script requires PowerShell version 3.0 or above.
+    - The script may take some time to complete depending on the number of files and the size of the files being copied.
+#>
+param (
+    [string]$sourceDirs = "C:\Users",
+    [string]$imageTargetDir = "D:\Images",
+    [string]$videoTargetDir = "D:\Videos",
+    [string]$officeTargetDir = "D:\OfficeFiles",
+    [string[]]$imageExtensions = "*.jpg", "*.jpeg", "*.png", "*.gif", "*.bmp",
+    [string[]]$videoExtensions = "*.mp4", "*.avi", "*.mov", "*.wmv", "*.flv",
+    [string[]]$officeExtensions = "*.doc", "*.docx", "*.xls", "*.xlsx", "*.ppt", "*.pptx",
+    [string[]]$excludeDirs = "C:\Windows", "C:\Program Files"
+)
 
 # Create target directories if they don't exist
 New-Item -ItemType Directory -Force -Path $imageTargetDir
