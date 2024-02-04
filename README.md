@@ -39,4 +39,4 @@ Thank you to all the contributors and users of this project. We appreciate your 
 
 ## 📬 Contact
 
-If you have any questions or suggestions, feel free to open an issue or reach out to me directly at your-email@example.com.
+If you have any questions or suggestions, feel free to open an issue or reach out to me directly at david@x907.com.
